@@ -126,6 +126,22 @@
 #define IEEE80211_CTL_EXT_SSW_FBACK    0x9000
 #define IEEE80211_CTL_EXT_SSW_ACK    0xa000
 
+#define IEEE80211_WEP_IV_LEN        4
+#define IEEE80211_WEP_ICV_LEN        4
+#define IEEE80211_CCMP_HDR_LEN        8
+#define IEEE80211_CCMP_MIC_LEN        8
+#define IEEE80211_CCMP_PN_LEN        6
+#define IEEE80211_CCMP_256_HDR_LEN    8
+#define IEEE80211_CCMP_256_MIC_LEN    16
+#define IEEE80211_CCMP_256_PN_LEN    6
+#define IEEE80211_TKIP_IV_LEN        8
+#define IEEE80211_TKIP_ICV_LEN        4
+#define IEEE80211_CMAC_PN_LEN        6
+#define IEEE80211_GMAC_PN_LEN        6
+#define IEEE80211_GCMP_HDR_LEN        8
+#define IEEE80211_GCMP_MIC_LEN        16
+#define IEEE80211_GCMP_PN_LEN        6
+
 
 #define IEEE80211_SN_MASK        ((IEEE80211_SCTL_SEQ) >> 4)
 #define IEEE80211_MAX_SN        IEEE80211_SN_MASK
@@ -1091,6 +1107,64 @@ enum ieee80211_min_mpdu_spacing {
 #define IEEE80211_HT_OP_MODE_CCFS2_SHIFT        5
 #define IEEE80211_HT_OP_MODE_CCFS2_MASK            0x1fe0
 
+/* 802.11ac VHT Capabilities */
+#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895            0x00000000
+#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991            0x00000001
+#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454            0x00000002
+#define IEEE80211_VHT_CAP_MAX_MPDU_MASK                0x00000003
+#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ        0x00000004
+#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ    0x00000008
+#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK            0x0000000C
+#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_SHIFT            2
+#define IEEE80211_VHT_CAP_RXLDPC                0x00000010
+#define IEEE80211_VHT_CAP_SHORT_GI_80                0x00000020
+#define IEEE80211_VHT_CAP_SHORT_GI_160                0x00000040
+#define IEEE80211_VHT_CAP_TXSTBC                0x00000080
+#define IEEE80211_VHT_CAP_RXSTBC_1                0x00000100
+#define IEEE80211_VHT_CAP_RXSTBC_2                0x00000200
+#define IEEE80211_VHT_CAP_RXSTBC_3                0x00000300
+#define IEEE80211_VHT_CAP_RXSTBC_4                0x00000400
+#define IEEE80211_VHT_CAP_RXSTBC_MASK                0x00000700
+#define IEEE80211_VHT_CAP_RXSTBC_SHIFT                8
+#define IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE            0x00000800
+#define IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE            0x00001000
+#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT                  13
+#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_MASK            \
+(7 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT)
+#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT        16
+#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_MASK        \
+(7 << IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT)
+#define IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE            0x00080000
+#define IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE            0x00100000
+#define IEEE80211_VHT_CAP_VHT_TXOP_PS                0x00200000
+#define IEEE80211_VHT_CAP_HTC_VHT                0x00400000
+#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT    23
+#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK    \
+(7 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT)
+#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_UNSOL_MFB    0x08000000
+#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_MRQ_MFB    0x0c000000
+#define IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN            0x10000000
+#define IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN            0x20000000
+#define IEEE80211_VHT_CAP_EXT_NSS_BW_SHIFT            30
+#define IEEE80211_VHT_CAP_EXT_NSS_BW_MASK            0xc0000000
+
+/**
+ * ieee80211_get_vht_max_nss - return max NSS for a given bandwidth/MCS
+ * @cap: VHT capabilities of the peer
+ * @bw: bandwidth to use
+ * @mcs: MCS index to use
+ * @ext_nss_bw_capable: indicates whether or not the local transmitter
+ *    (rate scaling algorithm) can deal with the new logic
+ *    (dot11VHTExtendedNSSBWCapable)
+ *
+ * Due to the VHT Extended NSS Bandwidth Support, the maximum NSS can
+ * vary for a given BW/MCS. This function parses the data.
+ *
+ * Note: This function is exported by cfg80211.
+ */
+int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
+                              enum ieee80211_vht_chanwidth bw,
+                              int mcs, bool ext_nss_bw_capable);
 
 /**
  * line 1453

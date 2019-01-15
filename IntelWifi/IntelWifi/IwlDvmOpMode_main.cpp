@@ -37,7 +37,7 @@
 //
 
 extern "C" {
-#include "iwlwifi/dvm/commands.h"
+#include "iwlwifi/fw/api/commands.h"
 #include "iwlwifi/dvm/dev.h"
 #include "iwlwifi/dvm/agn.h"
 #include "iwlwifi/iwl-drv.h"
