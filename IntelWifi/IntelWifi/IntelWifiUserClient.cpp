@@ -7,6 +7,7 @@
 //
 
 #include "IntelWifiUserClient.hpp"
+#include <os/log.h>
 
 #define super IOUserClient
 
@@ -24,6 +25,8 @@ const IOExternalMethodDispatch IntelWifiUserClient::sMethods[kNumberOfMethods] =
 };
 
 bool IntelWifiUserClient::start(IOService *provider) {
+    
+    os_log(OS_LOG_DEFAULT, "Driver init()");
     fProvider = OSDynamicCast(IntelWifi, provider);
     
     if (fProvider == NULL) {
@@ -35,6 +38,7 @@ bool IntelWifiUserClient::start(IOService *provider) {
 
 
 void IntelWifiUserClient::stop(IOService *provider) {
+    os_log(OS_LOG_DEFAULT, "Driver stop()");
     super::stop(provider);
 }
 

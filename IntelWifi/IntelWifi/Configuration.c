@@ -15,6 +15,7 @@ struct pci_device_id {
     u8 * driver_data;    /* Data private to the driver */
 };
 
+#define PCI_ANY_ID (~0)
 
 #define IWL_PCI_DEVICE(dev, subdev, cfg)        \
     .vendor = 0x8086,  .device = (dev),         \
@@ -209,7 +210,35 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
     /* 135 Series */
     {IWL_PCI_DEVICE(0x0892, 0x0062, iwl135_bgn_cfg)},
     {IWL_PCI_DEVICE(0x0893, 0x0262, iwl135_bgn_cfg)},
-    {IWL_PCI_DEVICE(0x0892, 0x0462, iwl135_bgn_cfg)}
+    {IWL_PCI_DEVICE(0x0892, 0x0462, iwl135_bgn_cfg)},
+    
+    {IWL_PCI_DEVICE(0x24FD, 0x0010, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0110, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x1110, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x1130, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0130, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x1010, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x10D0, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0050, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0150, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x9010, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x8110, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x8050, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x8010, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0810, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x9110, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x8130, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0910, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0930, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0950, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0850, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x1014, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x3E02, iwl8275_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x3E01, iwl8275_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x1012, iwl8275_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0012, iwl8275_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x0014, iwl8265_2ac_cfg)},
+    {IWL_PCI_DEVICE(0x24FD, 0x9074, iwl8265_2ac_cfg)},
    
 };
 

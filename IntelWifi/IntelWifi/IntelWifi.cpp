@@ -8,6 +8,8 @@ extern "C" {
 #include <IOKit/IOCommandGate.h>
 #include "IwlDvmOpMode.hpp"
 
+#include "os/log.h"
+
 #include "IO80211WorkLoop.h"
 
 #include "IwlTransOps.h"
@@ -26,15 +28,14 @@ static struct MediumTable
 
 
 bool IntelWifi::init(OSDictionary *properties) {
-    TraceLog("Driver init()");
+    os_log(OS_LOG_DEFAULT, "Driver init()");
     return super::init(properties);
 }
 
 void IntelWifi::free() {
-    TraceLog("Driver free()");
-    releaseAll();
-    TraceLog("Fully finished");
-    super::free();
+    os_log(OS_LOG_DEFAULT, "Driver free()");
+    //releaseAll();
+//    super::free();
 }
 
 IOService* IntelWifi::probe(IOService* provider, SInt32 *score) {
@@ -167,6 +168,7 @@ bool IntelWifi::start(IOService *provider) {
     fTrans->gate = gate;
     
 #ifdef CONFIG_IWLMVM
+    TraceLog("CONFIG_IWLMVM start");
     const struct iwl_cfg *cfg_7265d = NULL;
 
     /*
@@ -232,6 +234,8 @@ bool IntelWifi::start(IOService *provider) {
     }
     
     transOps = new IwlTransOps(this);
+    
+    return true;
     opmode = new IwlDvmOpMode(transOps);
     hw = opmode->start(fTrans, fTrans->cfg, &fTrans->drv->fw);
     

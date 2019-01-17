@@ -646,4 +646,6 @@ enum msix_hw_int_causes {
 #define CSR_MAC_ADDR0_STRAP		(CSR_ADDR_BASE + 8)
 #define CSR_MAC_ADDR1_STRAP		(CSR_ADDR_BASE + 0xC)
 
+#define CSR_HW_IF_CONFIG_REG_D3_DEBUG        (0x00000200)
+
 #endif /* !__iwl_csr_h__ */

@@ -59,6 +59,8 @@
 
 #ifndef __iwl_fw_api_tx_h__
 #define __iwl_fw_api_tx_h__
+#include <linux/types.h>
+#include <linux/netdevice.h>
 
 /**
  * enum iwl_tx_flags - bitmasks for tx_flags in TX command

@@ -75,6 +75,7 @@
 
 #include "iwl-config.h"
 #include "iwl-modparams.h"
+#include <os/log.h>
 
 struct firmware {
     size_t size;
@@ -1447,16 +1448,16 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
 
     
 // NOT USED. OpMode starts in start method of IntelWifi
-//    if (op->ops) {
-//        drv->op_mode = _iwl_op_mode_start(drv, op);
-//
-//        if (!drv->op_mode) {
-//            IOLockUnlock(iwlwifi_opmode_table_mtx);
-//            goto out_unbind;
-//        }
-//    } else {
-//        load_module = true;
-//    }
+    if (op->ops) {
+        drv->op_mode = _iwl_op_mode_start(drv, op);
+
+        if (!drv->op_mode) {
+            IOLockUnlock(iwlwifi_opmode_table_mtx);
+            goto out_unbind;
+        }
+    } else {
+        load_module = true;
+    }
 
     IOLockUnlock(iwlwifi_opmode_table_mtx);
 
@@ -1476,6 +1477,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
 	 * or hangs loading.
 	 */
 	if (load_module) {
+        IOLog("Try to load MODULE %s",op->name);
 		//request_module("%s", op->name);
 #ifdef CONFIG_IWLWIFI_OPMODE_MODULAR
         if (err)

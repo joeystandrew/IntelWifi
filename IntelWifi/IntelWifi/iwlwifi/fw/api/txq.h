@@ -62,6 +62,9 @@
 #ifndef __iwl_fw_api_txq_h__
 #define __iwl_fw_api_txq_h__
 
+#define IWL_DEFAULT_QUEUE_SIZE 256
+#define IWL_MGMT_QUEUE_SIZE 16
+
 /*
  * DQA queue numbers
  *

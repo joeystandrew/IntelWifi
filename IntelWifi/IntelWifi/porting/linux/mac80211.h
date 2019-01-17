@@ -10,7 +10,10 @@
 #define mac80211_h
 
 #include <linux/kernel.h>
+#include <linux/ieee80211.h>
+#include <linux/netdevice.h>
 #include <net/cfg80211.h>
+#include "jiffies.h"
 
 // line 135
 #define IEEE80211_INVAL_HW_QUEUE    0xff
@@ -1246,6 +1249,275 @@ ieee80211_vif_type_p2p(struct ieee80211_vif *vif)
 
 
 
+/**
+ * struct ieee80211_tx_queue_params - transmit queue configuration
+ *
+ * The information provided in this structure is required for QoS
+ * transmit queue configuration. Cf. IEEE 802.11 7.3.2.29.
+ *
+ * @aifs: arbitration interframe space [0..255]
+ * @cw_min: minimum contention window [a value of the form
+ *    2^n-1 in the range 1..32767]
+ * @cw_max: maximum contention window [like @cw_min]
+ * @txop: maximum burst time in units of 32 usecs, 0 meaning disabled
+ * @acm: is mandatory admission control required for the access category
+ * @uapsd: is U-APSD mode enabled for the queue
+ * @mu_edca: is the MU EDCA configured
+ * @mu_edca_param_rec: MU EDCA Parameter Record for HE
+ */
+struct ieee80211_tx_queue_params {
+    u16 txop;
+    u16 cw_min;
+    u16 cw_max;
+    u8 aifs;
+    bool acm;
+    bool uapsd;
+    bool mu_edca;
+    struct ieee80211_he_mu_edca_param_ac_rec mu_edca_param_rec;
+};
 
 
+/**
+ * enum ieee80211_max_queues - maximum number of queues
+ *
+ * @IEEE80211_MAX_QUEUES: Maximum number of regular device queues.
+ * @IEEE80211_MAX_QUEUE_MAP: bitmap with maximum queues set
+ */
+enum ieee80211_max_queues {
+    IEEE80211_MAX_QUEUES =        16,
+    IEEE80211_MAX_QUEUE_MAP =    BIT(IEEE80211_MAX_QUEUES) - 1,
+};
+
+/**
+ * struct ieee80211_cipher_scheme - cipher scheme
+ *
+ * This structure contains a cipher scheme information defining
+ * the secure packet crypto handling.
+ *
+ * @cipher: a cipher suite selector
+ * @iftype: a cipher iftype bit mask indicating an allowed cipher usage
+ * @hdr_len: a length of a security header used the cipher
+ * @pn_len: a length of a packet number in the security header
+ * @pn_off: an offset of pn from the beginning of the security header
+ * @key_idx_off: an offset of key index byte in the security header
+ * @key_idx_mask: a bit mask of key_idx bits
+ * @key_idx_shift: a bit shift needed to get key_idx
+ *     key_idx value calculation:
+ *      (sec_header_base[key_idx_off] & key_idx_mask) >> key_idx_shift
+ * @mic_len: a mic length in bytes
+ */
+struct ieee80211_cipher_scheme {
+    u32 cipher;
+    u16 iftype;
+    u8 hdr_len;
+    u8 pn_len;
+    u8 pn_off;
+    u8 key_idx_off;
+    u8 key_idx_mask;
+    u8 key_idx_shift;
+    u8 mic_len;
+};
+
+/**
+ * enum ieee80211_ac_numbers - AC numbers as used in mac80211
+ * @IEEE80211_AC_VO: voice
+ * @IEEE80211_AC_VI: video
+ * @IEEE80211_AC_BE: best effort
+ * @IEEE80211_AC_BK: background
+ */
+enum ieee80211_ac_numbers {
+    IEEE80211_AC_VO        = 0,
+    IEEE80211_AC_VI        = 1,
+    IEEE80211_AC_BE        = 2,
+    IEEE80211_AC_BK        = 3,
+};
+
+/* there are 40 bytes if you don't need the rateset to be kept */
+#define IEEE80211_TX_INFO_DRIVER_DATA_SIZE 40
+
+/* if you do need the rateset, then you have less space */
+#define IEEE80211_TX_INFO_RATE_DRIVER_DATA_SIZE 24
+
+/* maximum number of rate stages */
+#define IEEE80211_TX_MAX_RATES    4
+
+/* maximum number of rate table entries */
+#define IEEE80211_TX_RATE_TABLE_SIZE    4
+
+/**
+ * struct ieee80211_tx_rate - rate selection/status
+ *
+ * @idx: rate index to attempt to send with
+ * @flags: rate control flags (&enum mac80211_rate_control_flags)
+ * @count: number of tries in this rate before going to the next rate
+ *
+ * A value of -1 for @idx indicates an invalid rate and, if used
+ * in an array of retry rates, that no more rates should be tried.
+ *
+ * When used for transmit status reporting, the driver should
+ * always report the rate along with the flags it used.
+ *
+ * &struct ieee80211_tx_info contains an array of these structs
+ * in the control information, and it will be filled by the rate
+ * control algorithm according to what should be sent. For example,
+ * if this array contains, in the format { <idx>, <count> } the
+ * information::
+ *
+ *    { 3, 2 }, { 2, 2 }, { 1, 4 }, { -1, 0 }, { -1, 0 }
+ *
+ * then this means that the frame should be transmitted
+ * up to twice at rate 3, up to twice at rate 2, and up to four
+ * times at rate 1 if it doesn't get acknowledged. Say it gets
+ * acknowledged by the peer after the fifth attempt, the status
+ * information should then contain::
+ *
+ *   { 3, 2 }, { 2, 2 }, { 1, 1 }, { -1, 0 } ...
+ *
+ * since it was transmitted twice at rate 3, twice at rate 2
+ * and once at rate 1 after which we received an acknowledgement.
+ */
+struct ieee80211_tx_rate {
+    s8 idx;
+    u16 count:5,
+flags:11;
+};
+
+/**
+ * struct ieee80211_tx_info - skb transmit information
+ *
+ * This structure is placed in skb->cb for three uses:
+ *  (1) mac80211 TX control - mac80211 tells the driver what to do
+ *  (2) driver internal use (if applicable)
+ *  (3) TX status information - driver tells mac80211 what happened
+ *
+ * @flags: transmit info flags, defined above
+ * @band: the band to transmit on (use for checking for races)
+ * @hw_queue: HW queue to put the frame on, skb_get_queue_mapping() gives the AC
+ * @ack_frame_id: internal frame ID for TX status, used internally
+ * @control: union for control data
+ * @status: union for status data
+ * @driver_data: array of driver_data pointers
+ * @ampdu_ack_len: number of acked aggregated frames.
+ *     relevant only if IEEE80211_TX_STAT_AMPDU was set.
+ * @ampdu_len: number of aggregated frames.
+ *     relevant only if IEEE80211_TX_STAT_AMPDU was set.
+ * @ack_signal: signal strength of the ACK frame
+ */
+struct ieee80211_tx_info {
+    /* common information */
+    u32 flags;
+    u8 band;
+    
+    u8 hw_queue;
+    
+    u16 ack_frame_id;
+    
+    union {
+        struct {
+            union {
+                /* rate control */
+                struct {
+                    struct ieee80211_tx_rate rates[
+                                                   IEEE80211_TX_MAX_RATES];
+                    s8 rts_cts_rate_idx;
+                    u8 use_rts:1;
+                    u8 use_cts_prot:1;
+                    u8 short_preamble:1;
+                    u8 skip_table:1;
+                    /* 2 bytes free */
+                };
+                /* only needed before rate control */
+//                unsigned long jiffies;
+            };
+            /* NB: vif can be NULL for injected frames */
+            struct ieee80211_vif *vif;
+            struct ieee80211_key_conf *hw_key;
+            u32 flags;
+//            codel_time_t enqueue_time;
+            user_time_t enqueue_time;
+        } control;
+        struct {
+            u64 cookie;
+        } ack;
+        struct {
+            struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
+            s32 ack_signal;
+            u8 ampdu_ack_len;
+            u8 ampdu_len;
+            u8 antenna;
+            u16 tx_time;
+            bool is_valid_ack_signal;
+            void *status_driver_data[19 / sizeof(void *)];
+        } status;
+        struct {
+            struct ieee80211_tx_rate driver_rates[
+                                                  IEEE80211_TX_MAX_RATES];
+            u8 pad[4];
+            
+            void *rate_driver_data[
+                                   IEEE80211_TX_INFO_RATE_DRIVER_DATA_SIZE / sizeof(void *)];
+        };
+        void *driver_data[
+                          IEEE80211_TX_INFO_DRIVER_DATA_SIZE / sizeof(void *)];
+    };
+};
+
+
+/**
+ * ieee80211_alloc_hw_nm - Allocate a new hardware device
+ *
+ * This must be called once for each hardware device. The returned pointer
+ * must be used to refer to this device when calling other functions.
+ * mac80211 allocates a private data area for the driver pointed to by
+ * @priv in &struct ieee80211_hw, the size of this area is given as
+ * @priv_data_len.
+ *
+ * @priv_data_len: length of private data
+ * @ops: callbacks for this device
+ * @requested_name: Requested name for this device.
+ *    NULL is valid value, and means use the default naming (phy%d)
+ *
+ * Return: A pointer to the new hardware device, or %NULL on error.
+ */
+struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+                                           const struct ieee80211_ops *ops,
+                                           const char *requested_name);
+
+/**
+ * ieee80211_alloc_hw - Allocate a new hardware device
+ *
+ * This must be called once for each hardware device. The returned pointer
+ * must be used to refer to this device when calling other functions.
+ * mac80211 allocates a private data area for the driver pointed to by
+ * @priv in &struct ieee80211_hw, the size of this area is given as
+ * @priv_data_len.
+ *
+ * @priv_data_len: length of private data
+ * @ops: callbacks for this device
+ *
+ * Return: A pointer to the new hardware device, or %NULL on error.
+ */
+static inline
+struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
+                                        const struct ieee80211_ops *ops)
+{
+    return ieee80211_alloc_hw_nm(priv_data_len, ops, NULL);
+}
+
+/**
+ * wiphy_to_ieee80211_hw - return a mac80211 driver hw struct from a wiphy
+ *
+ * @wiphy: the &struct wiphy which we want to query
+ *
+ * mac80211 drivers can use this to get to their respective
+ * &struct ieee80211_hw. Drivers wishing to get to their own private
+ * structure can then access it via hw->priv. Note that mac802111 drivers should
+ * not use wiphy_priv() to try to get their private driver structure as this
+ * is already used internally by mac80211.
+ *
+ * Return: The mac80211 driver hw struct of @wiphy.
+ */
+struct ieee80211_hw *wiphy_to_ieee80211_hw(struct wiphy *wiphy);
 #endif /* mac80211_h */
+
+

@@ -25,7 +25,11 @@
 			<key>CFBundleIdentifier</key>
 			<string>net.rpeshkov.IntelWifi</string>
 			<key>IOPCIPrimaryMatch</key>
-			<string>0x00008086&amp;0x0000ffff</string>
+			<string>0x00008086&amp;0x000024fd</string>
+			<key>IOPCIMatch</key>
+			<string>0x00008086&amp;0x000024fd</string>
+			<key>IONameMatch</key>
+			<string>pci8086,24fd</string>
 			<key>IOClass</key>
 			<string>IntelWifi</string>
 			<key>IOProviderClass</key>

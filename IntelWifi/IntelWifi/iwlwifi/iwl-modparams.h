@@ -90,6 +90,8 @@ enum iwl_amsdu_size {
 	IWL_AMSDU_4K = 1,
 	IWL_AMSDU_8K = 2,
 	IWL_AMSDU_12K = 3,
+    /* Add 2K at the end to avoid breaking current API */
+    IWL_AMSDU_2K = 4,
 };
 
 enum iwl_uapsd_disable {

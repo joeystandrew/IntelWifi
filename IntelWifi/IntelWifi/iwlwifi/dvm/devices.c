@@ -33,7 +33,7 @@
 
 #include "agn.h"
 #include "dev.h"
-#include "commands.h"
+#include "../fw/api/commands.h"
 
 #include "../../iw_utils/allocation.h"
 

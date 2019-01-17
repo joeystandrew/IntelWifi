@@ -143,6 +143,10 @@ enum iwl_ucode_tlv_type {
 	IWL_UCODE_TLV_FW_DBG_TRIGGER	= 40,
 	IWL_UCODE_TLV_FW_GSCAN_CAPA	= 50,
 	IWL_UCODE_TLV_FW_MEM_SEG	= 51,
+    IWL_UCODE_TLV_IML        = 52,
+    
+    /* TLVs 0x1000-0x2000 are for internal driver usage */
+    IWL_UCODE_TLV_FW_DBG_DUMP_LST    = 0x1000,
 };
 
 struct iwl_ucode_tlv {
@@ -263,9 +267,17 @@ enum iwl_ucode_tlv_api {
 	IWL_UCODE_TLV_API_NAN2_VER2		= (__force iwl_ucode_tlv_api_t)31,
 	/* API Set 1 */
 	IWL_UCODE_TLV_API_ADAPTIVE_DWELL	= (__force iwl_ucode_tlv_api_t)32,
+    IWL_UCODE_TLV_API_OCE            = (__force iwl_ucode_tlv_api_t)33,
 	IWL_UCODE_TLV_API_NEW_BEACON_TEMPLATE	= (__force iwl_ucode_tlv_api_t)34,
 	IWL_UCODE_TLV_API_NEW_RX_STATS		= (__force iwl_ucode_tlv_api_t)35,
+    IWL_UCODE_TLV_API_WOWLAN_KEY_MATERIAL    = (__force iwl_ucode_tlv_api_t)36,
 	IWL_UCODE_TLV_API_COEX_ATS_EXTERNAL	= (__force iwl_ucode_tlv_api_t)37,
+    IWL_UCODE_TLV_API_QUOTA_LOW_LATENCY    = (__force iwl_ucode_tlv_api_t)38,
+    
+    IWL_UCODE_TLV_API_DEPRECATE_TTAK    = (__force iwl_ucode_tlv_api_t)41,
+    IWL_UCODE_TLV_API_ADAPTIVE_DWELL_V2    = (__force iwl_ucode_tlv_api_t)42,
+    IWL_UCODE_TLV_API_FRAG_EBS        = (__force iwl_ucode_tlv_api_t)44,
+    IWL_UCODE_TLV_API_REDUCE_TX_POWER    = (__force iwl_ucode_tlv_api_t)45,
 
 	NUM_IWL_UCODE_TLV_API
 #ifdef __CHECKER__
@@ -360,10 +372,12 @@ enum iwl_ucode_tlv_capa {
 	IWL_UCODE_TLV_CAPA_LAR_MULTI_MCC		= (__force iwl_ucode_tlv_capa_t)29,
 	IWL_UCODE_TLV_CAPA_BT_COEX_RRC			= (__force iwl_ucode_tlv_capa_t)30,
 	IWL_UCODE_TLV_CAPA_GSCAN_SUPPORT		= (__force iwl_ucode_tlv_capa_t)31,
+    
 	IWL_UCODE_TLV_CAPA_STA_PM_NOTIF			= (__force iwl_ucode_tlv_capa_t)38,
 	IWL_UCODE_TLV_CAPA_BINDING_CDB_SUPPORT		= (__force iwl_ucode_tlv_capa_t)39,
 	IWL_UCODE_TLV_CAPA_CDB_SUPPORT			= (__force iwl_ucode_tlv_capa_t)40,
 	IWL_UCODE_TLV_CAPA_D0I3_END_FIRST		= (__force iwl_ucode_tlv_capa_t)41,
+    IWL_UCODE_TLV_CAPA_TLC_OFFLOAD                  = (__force iwl_ucode_tlv_capa_t)43,
 	IWL_UCODE_TLV_CAPA_EXTENDED_DTS_MEASURE		= (__force iwl_ucode_tlv_capa_t)64,
 	IWL_UCODE_TLV_CAPA_SHORT_PM_TIMEOUTS		= (__force iwl_ucode_tlv_capa_t)65,
 	IWL_UCODE_TLV_CAPA_BT_MPLUT_SUPPORT		= (__force iwl_ucode_tlv_capa_t)67,
