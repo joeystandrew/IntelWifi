@@ -70,6 +70,7 @@
 //#include <linux/leds.h>
 #include <linux/in6.h>
 
+
 #ifdef CONFIG_THERMAL
 //#include <linux/thermal.h>
 #endif
@@ -474,13 +475,13 @@ struct iwl_mvm_vif {
     struct ieee80211_key_conf *ap_wep_key;
 };
 
-static inline struct iwl_mvm_vif *
-iwl_mvm_vif_from_mac80211(struct ieee80211_vif *vif)
-{
-    if (!vif)
-        return NULL;
-    return (void *)vif->drv_priv;
-}
+//static inline struct iwl_mvm_vif *
+//iwl_mvm_vif_from_mac80211(struct ieee80211_vif *vif)
+//{
+//    if (!vif)
+//        return NULL;
+//    return (void *)vif->drv_priv;
+//}
 
 extern const u8 tid_to_mac80211_ac[];
 
@@ -728,13 +729,13 @@ struct iwl_mvm_baid_data {
     struct iwl_mvm_reorder_buf_entry entries[];
 };
 
-static inline struct iwl_mvm_baid_data *
-iwl_mvm_baid_data_from_reorder_buf(struct iwl_mvm_reorder_buffer *buf)
-{
-    return (void *)((u8 *)buf -
-                    offsetof(struct iwl_mvm_baid_data, reorder_buf) -
-                    sizeof(*buf) * buf->queue);
-}
+//static inline struct iwl_mvm_baid_data *
+//iwl_mvm_baid_data_from_reorder_buf(struct iwl_mvm_reorder_buffer *buf)
+//{
+//    return (void *)((u8 *)buf -
+//                    offsetof(struct iwl_mvm_baid_data, reorder_buf) -
+//                    sizeof(*buf) * buf->queue);
+//}
 
 /*
  * enum iwl_mvm_queue_status - queue status
@@ -1172,42 +1173,42 @@ static inline bool iwl_mvm_firmware_running(struct iwl_mvm *mvm)
 /* Must be called with rcu_read_lock() held and it can only be
  * released when mvmsta is not needed anymore.
  */
-static inline struct iwl_mvm_sta *
-iwl_mvm_sta_from_staid_rcu(struct iwl_mvm *mvm, u8 sta_id)
-{
-    struct ieee80211_sta *sta;
-    
-    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
-        return NULL;
-    
-//    sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
-    sta = mvm->fw_id_to_mac_id[sta_id];
-    
-    /* This can happen if the station has been removed right now */
-//    if (IS_ERR_OR_NULL(sta))
+//static inline struct iwl_mvm_sta *
+//iwl_mvm_sta_from_staid_rcu(struct iwl_mvm *mvm, u8 sta_id)
+//{
+//    struct ieee80211_sta *sta;
+//
+//    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
 //        return NULL;
-    
-    return iwl_mvm_sta_from_mac80211(sta);
-}
+//
+////    sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
+//    sta = mvm->fw_id_to_mac_id[sta_id];
+//
+//    /* This can happen if the station has been removed right now */
+////    if (IS_ERR_OR_NULL(sta))
+////        return NULL;
+//
+//    return iwl_mvm_sta_from_mac80211(sta);
+//}
 
-static inline struct iwl_mvm_sta *
-iwl_mvm_sta_from_staid_protected(struct iwl_mvm *mvm, u8 sta_id)
-{
-    struct ieee80211_sta *sta;
-    
-    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
-        return NULL;
-    
-//    sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[sta_id],
-//                                    lockdep_is_held(&mvm->mutex));
-    sta = mvm->fw_id_to_mac_id[sta_id];
-    
-    /* This can happen if the station has been removed right now */
-//    if (IS_ERR_OR_NULL(sta))
+//static inline struct iwl_mvm_sta *
+//iwl_mvm_sta_from_staid_protected(struct iwl_mvm *mvm, u8 sta_id)
+//{
+//    struct ieee80211_sta *sta;
+//
+//    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
 //        return NULL;
-    
-    return iwl_mvm_sta_from_mac80211(sta);
-}
+//
+////    sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[sta_id],
+////                                    lockdep_is_held(&mvm->mutex));
+//    sta = mvm->fw_id_to_mac_id[sta_id];
+//
+//    /* This can happen if the station has been removed right now */
+////    if (IS_ERR_OR_NULL(sta))
+////        return NULL;
+//
+//    return iwl_mvm_sta_from_mac80211(sta);
+//}
 
 static inline bool iwl_mvm_is_d0i3_supported(struct iwl_mvm *mvm)
 {
@@ -1802,8 +1803,8 @@ int _iwl_mvm_exit_d0i3(struct iwl_mvm *mvm);
 int iwl_mvm_send_bt_init_conf(struct iwl_mvm *mvm);
 void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
                               struct iwl_rx_cmd_buffer *rxb);
-void iwl_mvm_bt_rssi_event(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-                           enum ieee80211_rssi_event_data);
+//void iwl_mvm_bt_rssi_event(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+//                           enum ieee80211_rssi_event_data);
 void iwl_mvm_bt_coex_vif_change(struct iwl_mvm *mvm);
 u16 iwl_mvm_coex_agg_time_limit(struct iwl_mvm *mvm,
                                 struct ieee80211_sta *sta);

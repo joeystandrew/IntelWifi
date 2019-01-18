@@ -45,7 +45,7 @@
 extern "C" {
 #include "iwl-fh.h"
 #include "iwl-trans.h"
-#include "commands.h"
+#include "iwlwifi/fw/api/commands.h"
 #include "iw_utils/allocation.h"
 }
 

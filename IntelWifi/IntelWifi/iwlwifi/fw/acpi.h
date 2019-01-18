@@ -116,12 +116,12 @@ static inline void *iwl_acpi_get_object(struct device *dev, char *method)
     return ERR_PTR(-ENOENT);
 }
 
-static inline union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
-                                                       union acpi_object *data,
-                                                       int data_size)
-{
-    return ERR_PTR(-ENOENT);
-}
+//static inline union acpi_object *iwl_acpi_get_wifi_pkg(struct device *dev,
+//                                                       union acpi_object *data,
+//                                                       int data_size)
+//{
+////    return ERR_PTR(-ENOENT);
+//}
 
 static inline int iwl_acpi_get_mcc(struct device *dev, char *mcc)
 {

@@ -2,7 +2,7 @@
 //  IwlMvmOpMode.cpp
 //  IntelWifi
 //
-//  Created by Anosova Natalia on 16/01/2019.
+//  Created by Anosov Alexey on 16/01/2019.
 //  Copyright © 2019 Roman Peshkov. All rights reserved.
 //
 
@@ -18,29 +18,29 @@ IwlMvmOpMode::IwlMvmOpMode(TransOps *ops) {
 
 
 struct ieee80211_hw *IwlMvmOpMode::start(struct iwl_trans *trans, const struct iwl_cfg *cfg, const struct iwl_fw *fw) {
-    op_mode = iwl_op_mode_mvm_start(trans, cfg, fw);
-    return op_mode->hw;
+    priv = iwl_op_mode_mvm_start(trans, cfg, fw);
+    return priv->hw;
 }
 
-void IwlMvmOpMode::nic_config(struct iwl_op_mode *op_mode) {
-    iwl_nic_config(this->op_mode);
+void IwlMvmOpMode::nic_config(struct iwl_mvm *priv) {
+//    iwl_nic_config(this->priv);
 }
 
-void IwlMvmOpMode::stop(struct iwl_op_mode *op_mode) {
-    iwl_op_mode_mvm_stop(priv);
+void IwlMvmOpMode::stop(struct iwl_mvm *priv) {
+//    iwl_op_mode_mvm_stop(priv);
 }
 
-void IwlMvmOpMode::rx(struct iwl_priv *priv, struct napi_struct *napi, struct iwl_rx_cmd_buffer *rxb) {
-    iwl_rx_dispatch(this->priv, napi, rxb);
+void IwlMvmOpMode::rx(struct iwl_mvm *priv, struct napi_struct *napi, struct iwl_rx_cmd_buffer *rxb) {
+//    iwl_rx_dispatch(this->priv, napi, rxb);
 }
 
-IOReturn IwlMvmOpMode::getCARD_CAPABILITIES(IO80211Interface *interface,
-                                            struct apple80211_capability_data *cd) {
-    cd->version = APPLE80211_VERSION;
-    cd->capabilities[0] = 0xab;
-    cd->capabilities[1] = 0x7e;
-    return kIOReturnSuccess;
-}
+//IOReturn IwlMvmOpMode::getCARD_CAPABILITIES(IO80211Interface *interface,
+//                                            struct apple80211_capability_data *cd) {
+//    cd->version = APPLE80211_VERSION;
+//    cd->capabilities[0] = 0xab;
+//    cd->capabilities[1] = 0x7e;
+//    return kIOReturnSuccess;
+//}
 
 IOReturn IwlMvmOpMode::getPHY_MODE(IO80211Interface *interface, struct apple80211_phymode_data *pd) {
     pd->version = APPLE80211_VERSION;
@@ -62,29 +62,29 @@ IOReturn IwlMvmOpMode::getPHY_MODE(IO80211Interface *interface, struct apple8021
 IOReturn IwlMvmOpMode::getPOWER(IO80211Interface *intf, apple80211_power_data *power_data) {
     power_data->version = APPLE80211_VERSION;
     power_data->num_radios = 1;
-    power_data->power_state[0] = priv->is_open == 0 ? APPLE80211_POWER_OFF : APPLE80211_POWER_ON;
+//    power_data->power_state[0] = priv->is_open == 0 ? APPLE80211_POWER_OFF : APPLE80211_POWER_ON;
     return kIOReturnSuccess;
 }
 
 IOReturn IwlMvmOpMode::setPOWER(IO80211Interface *intf, apple80211_power_data *power_data) {
-    
-    if (!power_data || power_data->num_radios <= 0) {
-        return kIOReturnError;
-    }
-    
-    apple80211_power_state power_state = (apple80211_power_state)power_data->power_state[0];
-    
-    switch (power_state) {
-        case APPLE80211_POWER_OFF:
-            iwlagn_mac_stop(priv);
-            break;
-        case APPLE80211_POWER_ON:
-            iwlagn_mac_start(priv);
-            break;
-        default:
-            IWL_WARN(this->priv->trans, "Don't know what to do with this state: %d", power_state);
-    }
-    
+//
+//    if (!power_data || power_data->num_radios <= 0) {
+//        return kIOReturnError;
+//    }
+//
+//    apple80211_power_state power_state = (apple80211_power_state)power_data->power_state[0];
+//
+//    switch (power_state) {
+//        case APPLE80211_POWER_OFF:
+//            iwlagn_mac_stop(priv);
+//            break;
+//        case APPLE80211_POWER_ON:
+//            iwlagn_mac_start(priv);
+//            break;
+//        default:
+//            IWL_WARN(this->priv->trans, "Don't know what to do with this state: %d", power_state);
+//    }
+
     return kIOReturnSuccess;
     
 }

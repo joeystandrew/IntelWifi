@@ -359,7 +359,7 @@ struct iwl_mvm_delba_notif {
 struct iwl_mvm_rxq_dup_data {
     __le16 last_seq[IWL_MAX_TID_COUNT + 1];
     u8 last_sub_frame[IWL_MAX_TID_COUNT + 1];
-} ____cacheline_aligned_in_smp;
+};
 
 /**
  * struct iwl_mvm_sta - representation of a station in the driver
@@ -444,11 +444,12 @@ struct iwl_mvm_sta {
 
 u16 iwl_mvm_tid_queued(struct iwl_mvm *mvm, struct iwl_mvm_tid_data *tid_data);
 
-static inline struct iwl_mvm_sta *
-iwl_mvm_sta_from_mac80211(struct ieee80211_sta *sta)
-{
-    return (void *)sta->drv_priv;
-}
+//static inline struct iwl_mvm_sta*
+//iwl_mvm_sta_from_mac80211(struct ieee80211_sta *sta)
+//{
+//
+//    return (void *)sta->drv_priv;
+//}
 
 /**
  * struct iwl_mvm_int_sta - representation of an internal station (auxiliary or
@@ -551,11 +552,11 @@ void iwl_mvm_dealloc_snif_sta(struct iwl_mvm *mvm);
 
 void iwl_mvm_sta_modify_ps_wake(struct iwl_mvm *mvm,
                                 struct ieee80211_sta *sta);
-void iwl_mvm_sta_modify_sleep_tx_count(struct iwl_mvm *mvm,
-                                       struct ieee80211_sta *sta,
-                                       enum ieee80211_frame_release_type reason,
-                                       u16 cnt, u16 tids, bool more_data,
-                                       bool single_sta_queue);
+//void iwl_mvm_sta_modify_sleep_tx_count(struct iwl_mvm *mvm,
+//                                       struct ieee80211_sta *sta,
+//                                       enum ieee80211_frame_release_type reason,
+//                                       u16 cnt, u16 tids, bool more_data,
+//                                       bool single_sta_queue);
 int iwl_mvm_drain_sta(struct iwl_mvm *mvm, struct iwl_mvm_sta *mvmsta,
                       bool drain);
 void iwl_mvm_sta_modify_disable_tx(struct iwl_mvm *mvm,
@@ -567,6 +568,6 @@ void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
                                        struct iwl_mvm_vif *mvmvif,
                                        bool disable);
 void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
-void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
+//void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
 
 #endif /* __sta_h__ */

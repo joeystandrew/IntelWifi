@@ -34,9 +34,9 @@
 //
 
 extern "C" {
-#include "agn.h"
-#include "dev.h"
-#include "commands.h"
+#include "iwlwifi/dvm/agn.h"
+#include "iwlwifi/dvm/dev.h"
+#include "iwlwifi/dvm/commands.h"
 }
 
 #include "IwlDvmOpMode.hpp"

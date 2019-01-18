@@ -6,7 +6,8 @@ extern "C" {
 
 #include <IOKit/IOInterruptController.h>
 #include <IOKit/IOCommandGate.h>
-#include "IwlDvmOpMode.hpp"
+//#include "IwlDvmOpMode.hpp"
+#include "Mvm/IwlMvmOpMode.hpp"
 
 #include "os/log.h"
 
@@ -168,7 +169,6 @@ bool IntelWifi::start(IOService *provider) {
     fTrans->gate = gate;
     
 #ifdef CONFIG_IWLMVM
-    TraceLog("CONFIG_IWLMVM start");
     const struct iwl_cfg *cfg_7265d = NULL;
 
     /*
@@ -235,8 +235,13 @@ bool IntelWifi::start(IOService *provider) {
     
     transOps = new IwlTransOps(this);
     
-    return true;
-    opmode = new IwlDvmOpMode(transOps);
+    switch (fTrans->drv->fw.type) {
+        case IWL_FW_DVM:
+//            opmode = new IwlDvmOpMode(transOps);
+        case IWL_FW_MVM:
+            opmode = new IwlMvmOpMode(transOps);
+    }
+    
     hw = opmode->start(fTrans, fTrans->cfg, &fTrans->drv->fw);
     
     if (!hw) {
@@ -273,9 +278,8 @@ void IntelWifi::stop(IOService *provider) {
         }
     }
     
-    struct iwl_priv *priv = (struct iwl_priv *)hw->priv;
 
-    opmode->stop(priv);
+//    opmode->stop(hw->priv);
     iwl_drv_stop(fTrans->drv);
     iwl_trans_pcie_free(fTrans);
     fTrans = NULL;

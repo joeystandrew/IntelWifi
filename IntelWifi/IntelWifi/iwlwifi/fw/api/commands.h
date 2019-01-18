@@ -112,7 +112,7 @@ enum iwl_legacy_cmds {
     /**
      * @REPLY_ERROR: Cause an error in the firmware, for testing purposes.
      */
-//    REPLY_ERROR = 0x2,
+    REPLY_ERROR = 0x2,
     
     /**
      * @ECHO_CMD: Send data to the device to have it returned immediately.
@@ -365,7 +365,7 @@ enum iwl_legacy_cmds {
     /**
      * @POWER_TABLE_CMD: &struct iwl_device_power_cmd
      */
-//    POWER_TABLE_CMD = 0x77,
+    POWER_TABLE_CMD = 0x77,
     
     /**
      * @PSM_UAPSD_AP_MISBEHAVING_NOTIFICATION:
@@ -400,7 +400,7 @@ enum iwl_legacy_cmds {
     /**
      * @BEACON_NOTIFICATION: &struct iwl_extended_beacon_notif
      */
-//    BEACON_NOTIFICATION = 0x90,
+    BEACON_NOTIFICATION = 0x90,
     
     /**
      * @BEACON_TEMPLATE_CMD:
@@ -412,7 +412,7 @@ enum iwl_legacy_cmds {
     /**
      * @TX_ANT_CONFIGURATION_CMD: &struct iwl_tx_ant_cfg_cmd
      */
-//    TX_ANT_CONFIGURATION_CMD = 0x98,
+    TX_ANT_CONFIGURATION_CMD = 0x98,
     
     /**
      * @STATISTICS_CMD: &struct iwl_statistics_cmd
@@ -425,7 +425,7 @@ enum iwl_legacy_cmds {
      * &struct iwl_notif_statistics_v11,
      * &struct iwl_notif_statistics_cdb
      */
-//    STATISTICS_NOTIFICATION = 0x9d,
+    STATISTICS_NOTIFICATION = 0x9d,
     
     /**
      * @EOSP_NOTIFICATION:
@@ -446,12 +446,12 @@ enum iwl_legacy_cmds {
      * Card state (RF/CT kill) notification,
      * uses &struct iwl_card_state_notif
      */
-//    CARD_STATE_NOTIFICATION = 0xa1,
+    CARD_STATE_NOTIFICATION = 0xa1,
     
     /**
      * @MISSED_BEACONS_NOTIFICATION: &struct iwl_missed_beacons_notif
      */
-//    MISSED_BEACONS_NOTIFICATION = 0xa2,
+    MISSED_BEACONS_NOTIFICATION = 0xa2,
     
     /**
      * @MAC_PM_POWER_TABLE: using &struct iwl_mac_power_cmd
@@ -471,13 +471,13 @@ enum iwl_legacy_cmds {
     /**
      * @REPLY_RX_PHY_CMD: &struct iwl_rx_phy_info
      */
-//    REPLY_RX_PHY_CMD = 0xc0,
+    REPLY_RX_PHY_CMD = 0xc0,
     
     /**
      * @REPLY_RX_MPDU_CMD:
      * &struct iwl_rx_mpdu_res_start or &struct iwl_rx_mpdu_desc
      */
-//    REPLY_RX_MPDU_CMD = 0xc1,
+    REPLY_RX_MPDU_CMD = 0xc1,
     
     /**
      * @FRAME_RELEASE:

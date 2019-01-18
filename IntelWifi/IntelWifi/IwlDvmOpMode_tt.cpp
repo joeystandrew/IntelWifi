@@ -33,9 +33,9 @@ extern "C" {
 #include "iwl-io.h"
 #include "iwl-modparams.h"
 #include "iwl-debug.h"
-#include "agn.h"
-#include "dev.h"
-#include "commands.h"
+#include "iwlwifi/dvm/agn.h"
+#include "iwlwifi/dvm/dev.h"
+#include "iwlwifi/dvm/commands.h"
 //#include "tt.h"
 }
 

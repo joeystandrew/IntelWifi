@@ -172,8 +172,8 @@ void iwl_mvm_rx_time_event_notif(struct iwl_mvm *mvm,
  * requested channel. Once the FW completes the ROC request it will issue
  * another notification to the driver.
  */
-int iwl_mvm_start_p2p_roc(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-                          int duration, enum ieee80211_roc_type type);
+//int iwl_mvm_start_p2p_roc(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+//                          int duration, enum ieee80211_roc_type type);
 
 /**
  * iwl_mvm_stop_roc - stop remain on channel functionality
