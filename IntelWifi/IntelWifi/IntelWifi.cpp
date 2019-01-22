@@ -45,6 +45,7 @@ IOService* IntelWifi::probe(IOService* provider, SInt32 *score) {
     TraceLog("Probing dev");
     
     pciDevice = OSDynamicCast(IOPCIDevice, provider);
+    
     if (!pciDevice) {
         TraceLog("Provider is not PCI device");
         return NULL;

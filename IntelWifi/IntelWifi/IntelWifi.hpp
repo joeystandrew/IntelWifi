@@ -4,6 +4,7 @@
 
 extern "C" {
     #include "iwl-debug.h"
+    
 #include "iwlwifi/iwl-csr.h"
 #include "iwl-drv.h"
 #include "iwl-trans.h"
@@ -91,7 +92,7 @@ public:
     void iwl_trans_pcie_stop_device(struct iwl_trans *trans, bool low_power); // line 1347
     int iwl_trans_pcie_start_hw(struct iwl_trans *trans, bool low_power); // line 1675
     void iwl_trans_pcie_op_mode_leave(struct iwl_trans *trans); // line 1687
-    
+    IwlOpModeOps *opmode;
 private:
     bool createMediumDict();
     inline void releaseAll();
@@ -163,7 +164,7 @@ private:
     UInt16 fDeviceId;
     UInt16 fSubsystemId;
     
-    IwlOpModeOps *opmode;
+    
 
     struct ieee80211_hw *hw;
     IOCommandGate *gate;

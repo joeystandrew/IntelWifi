@@ -180,9 +180,19 @@ static inline u32 get_unaligned_le32(const void *p)
 
 
 
+static inline int atomic_dec_and_test(volatile SInt32 * addr)
+{
+    return ((OSDecrementAtomic(addr) == 1) ? 1 : 0);
+}
 
+static inline int atomic_inc_and_test(volatile SInt32 * addr)
+{
+    return ((OSIncrementAtomic(addr) == -1) ? 1 : 0);
+}
 
+#define atomic_inc(v) OSIncrementAtomic(v)
+#define atomic_dec(v) OSDecrementAtomic(v)
 
-
+#define work_struct queue_entry
 
 #endif /* kernel_h */

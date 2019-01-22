@@ -37,9 +37,9 @@ public:
     virtual struct ieee80211_hw *start(struct iwl_trans *trans,
                                  const struct iwl_cfg *cfg,
                                  const struct iwl_fw *fw) = 0;
-    virtual void nic_config(struct iwl_mvm *priv) = 0;
-    virtual void stop(struct iwl_mvm *priv) = 0;
-    virtual void rx(struct iwl_mvm *priv, struct napi_struct *napi, struct iwl_rx_cmd_buffer *rxb) = 0;
+    virtual void nic_config() = 0;
+    virtual void stop() = 0;
+    virtual void rx(struct napi_struct *napi, struct iwl_rx_cmd_buffer *rxb) = 0;
     
     
     // IOCTLs
@@ -55,7 +55,7 @@ public:
     // Linux calls
     
 //    virtual void add_interface(struct ieee80211_vif *vif) = 0;
-//    virtual void channel_switch(struct iwl_priv *priv, struct ieee80211_vif *vif, struct ieee80211_channel_switch *chsw) = 0;
+//    virtual void channel_switch(struct ieee80211_vif *vif, struct ieee80211_channel_switch *chsw) = 0;
 
 //    void (*rx_rss)(struct iwl_op_mode *op_mode, struct napi_struct *napi,
 //                   struct iwl_rx_cmd_buffer *rxb, unsigned int queue);

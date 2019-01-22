@@ -85,10 +85,7 @@
 
 #define UCODE_VALID_OK    cpu_to_le32(0x1)
 
-struct iwl_mvm_alive_data {
-    bool valid;
-    u32 scd_base_addr;
-};
+
 
 static int iwl_send_tx_ant_cfg(struct iwl_mvm *mvm, u8 valid_tx_ant)
 {

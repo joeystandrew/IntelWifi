@@ -41,7 +41,8 @@ typedef s32 __s32;
 typedef s64 __s64;
 
 
-typedef u64 dma_addr_t;
+//typedef u64 dma_addr_t;
+#define dma_addr_t  IOPhysicalAddress64
 
 typedef u16 __bitwise __be16;
 typedef u32 __bitwise __be32;

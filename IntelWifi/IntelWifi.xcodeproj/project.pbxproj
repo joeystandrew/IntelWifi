@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C739D7621F6B4F6001118E5 /* IwlMvmOpMode_fw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C739D7421F6B4F6001118E5 /* IwlMvmOpMode_fw.cpp */; };
+		1C739D7721F6B4F6001118E5 /* IwlMvmOpMode_fw.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1C739D7521F6B4F6001118E5 /* IwlMvmOpMode_fw.hpp */; };
 		1CC3786C21F1B38E00E90054 /* IwlMvmOpMode_ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F31B0B21EFBD3900C6C4A2 /* IwlMvmOpMode_ops.cpp */; };
 		1CC3787021F1F76900E90054 /* IntelWifiUserClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A62023F52022497D00B0CBD1 /* IntelWifiUserClient.cpp */; };
 		1CC3787121F1F76900E90054 /* IntelWifiUserClient.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A62023F62022497D00B0CBD1 /* IntelWifiUserClient.hpp */; };
@@ -108,7 +110,6 @@
 		A642B2CE20004F5000264363 /* compiler.h in Headers */ = {isa = PBXBuildFile; fileRef = A642B2CB20004F5000264363 /* compiler.h */; };
 		A65083781FEFB2DC001300AC /* IntelWifi.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A65083771FEFB2DC001300AC /* IntelWifi.hpp */; };
 		A650837A1FEFB2DC001300AC /* IntelWifi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A65083791FEFB2DC001300AC /* IntelWifi.cpp */; };
-		A6B62E18201A8ED300426B95 /* trans.c in Sources */ = {isa = PBXBuildFile; fileRef = A6B62E17201A8ED300426B95 /* trans.c */; };
 		A6B62E1B201A951B00426B95 /* iwl-io.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B62E19201A951A00426B95 /* iwl-io.h */; };
 		A6B62E1C201A951B00426B95 /* iwl-io.c in Sources */ = {isa = PBXBuildFile; fileRef = A6B62E1A201A951B00426B95 /* iwl-io.c */; };
 		A6B62E1E201AA58C00426B95 /* iwl-scd.h in Headers */ = {isa = PBXBuildFile; fileRef = A6B62E1D201AA58B00426B95 /* iwl-scd.h */; };
@@ -152,6 +153,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C739D7421F6B4F6001118E5 /* IwlMvmOpMode_fw.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IwlMvmOpMode_fw.cpp; sourceTree = "<group>"; };
+		1C739D7521F6B4F6001118E5 /* IwlMvmOpMode_fw.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IwlMvmOpMode_fw.hpp; sourceTree = "<group>"; };
 		1CEB58F721EE6A7D00068903 /* mvm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mvm.h; sourceTree = "<group>"; };
 		1CEB58F821EE6AF700068903 /* ops.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ops.c; sourceTree = "<group>"; };
 		1CEB58FB21EE6B4500068903 /* mac80211.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mac80211.c; sourceTree = "<group>"; };
@@ -379,6 +382,8 @@
 				55F31B0621EFB79700C6C4A2 /* IwlMvmOpMode.cpp */,
 				55F31B0721EFB79700C6C4A2 /* IwlMvmOpMode.hpp */,
 				55F31B0B21EFBD3900C6C4A2 /* IwlMvmOpMode_ops.cpp */,
+				1C739D7421F6B4F6001118E5 /* IwlMvmOpMode_fw.cpp */,
+				1C739D7521F6B4F6001118E5 /* IwlMvmOpMode_fw.hpp */,
 			);
 			path = Mvm;
 			sourceTree = "<group>";
@@ -718,6 +723,7 @@
 				A61525C11FF4CB760094A282 /* img.h in Headers */,
 				A61525BD1FF4C89D0094A282 /* file.h in Headers */,
 				1CEB591821EE72DF00068903 /* sta.h in Headers */,
+				1C739D7721F6B4F6001118E5 /* IwlMvmOpMode_fw.hpp in Headers */,
 				A614273E200205480093DED7 /* notif-wait.h in Headers */,
 				A61264FA1FF20162006A7AEA /* iwl-csr.h in Headers */,
 				1CEB594321EE780700068903 /* constants.h in Headers */,
@@ -790,7 +796,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A650837E1FEFB2DC001300AC /* Build configuration list for PBXNativeTarget "IntelWifi" */;
 			buildPhases = (
-				55F8344321EFAF8900378795 /* remove Kext */,
 				A650836F1FEFB2DC001300AC /* Sources */,
 				A65083701FEFB2DC001300AC /* Frameworks */,
 				A65083711FEFB2DC001300AC /* Headers */,
@@ -879,28 +884,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		55F8344321EFAF8900378795 /* remove Kext */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "remove Kext";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		A650836F1FEFB2DC001300AC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -910,7 +893,7 @@
 				A61525A61FF4B6F90094A282 /* 7000.c in Sources */,
 				A61525A11FF4B6F90094A282 /* 6000.c in Sources */,
 				1CC3786C21F1B38E00E90054 /* IwlMvmOpMode_ops.cpp in Sources */,
-				A6B62E18201A8ED300426B95 /* trans.c in Sources */,
+				1C739D7621F6B4F6001118E5 /* IwlMvmOpMode_fw.cpp in Sources */,
 				1CC3787021F1F76900E90054 /* IntelWifiUserClient.cpp in Sources */,
 				A614273F200205480093DED7 /* notif-wait.c in Sources */,
 				A6B62E1C201A951B00426B95 /* iwl-io.c in Sources */,
@@ -1061,13 +1044,13 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = IntelWifi/porting/;
 				INFOPLIST_FILE = IntelWifi/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MODULE_NAME = net.rpeshkov.IntelWifi;
 				MODULE_VERSION = 1.0.0d1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.rpeshkov.IntelWifi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SYSTEM_HEADER_SEARCH_PATHS = IntelWifi/porting/;
+				SYSTEM_HEADER_SEARCH_PATHS = "IntelWifi/porting/ /usr/include";
 				USER_HEADER_SEARCH_PATHS = ../common;
 				WARNING_CFLAGS = "-Wno-inconsistent-missing-override";
 				WRAPPER_EXTENSION = kext;
@@ -1083,13 +1066,13 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = IntelWifi/porting/;
 				INFOPLIST_FILE = IntelWifi/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MODULE_NAME = net.rpeshkov.IntelWifi;
 				MODULE_VERSION = 1.0.0d1;
 				PRODUCT_BUNDLE_IDENTIFIER = net.rpeshkov.IntelWifi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SYSTEM_HEADER_SEARCH_PATHS = IntelWifi/porting/;
+				SYSTEM_HEADER_SEARCH_PATHS = "IntelWifi/porting/ /usr/include";
 				USER_HEADER_SEARCH_PATHS = ../common;
 				WARNING_CFLAGS = "-Wno-inconsistent-missing-override";
 				WRAPPER_EXTENSION = kext;

@@ -67,11 +67,13 @@
 
 //#include <linux/spinlock.h>
 #include <linux/ieee80211.h>
+
 //#include <linux/wait.h>
 
 #include "iwl-trans.h" /* for IWL_MAX_TID_COUNT */
 #include "fw-api.h" /* IWL_MVM_STATION_COUNT */
 #include "rs.h"
+#include <libkern/locks.h>
 
 struct iwl_mvm;
 struct iwl_mvm_vif;
@@ -414,7 +416,7 @@ struct iwl_mvm_sta {
     enum ieee80211_sta_state sta_state;
     bool bt_reduced_txpower;
     bool next_status_eosp;
-//    spinlock_t lock;
+    IOSimpleLock *lock;
     struct iwl_mvm_tid_data tid_data[IWL_MAX_TID_COUNT + 1];
     u8 tid_to_baid[IWL_MAX_TID_COUNT];
     union {
@@ -444,12 +446,12 @@ struct iwl_mvm_sta {
 
 u16 iwl_mvm_tid_queued(struct iwl_mvm *mvm, struct iwl_mvm_tid_data *tid_data);
 
-//static inline struct iwl_mvm_sta*
-//iwl_mvm_sta_from_mac80211(struct ieee80211_sta *sta)
-//{
-//
-//    return (void *)sta->drv_priv;
-//}
+static inline struct iwl_mvm_sta*
+iwl_mvm_sta_from_mac80211(struct ieee80211_sta *sta)
+{
+
+    return (struct iwl_mvm_sta *)sta->drv_priv;
+}
 
 /**
  * struct iwl_mvm_int_sta - representation of an internal station (auxiliary or

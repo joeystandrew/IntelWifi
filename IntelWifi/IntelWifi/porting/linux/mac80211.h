@@ -1518,6 +1518,23 @@ struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
  * Return: The mac80211 driver hw struct of @wiphy.
  */
 struct ieee80211_hw *wiphy_to_ieee80211_hw(struct wiphy *wiphy);
+
+/**
+ * enum ieee80211_interface_iteration_flags - interface iteration flags
+ * @IEEE80211_IFACE_ITER_NORMAL: Iterate over all interfaces that have
+ *    been added to the driver; However, note that during hardware
+ *    reconfiguration (after restart_hw) it will iterate over a new
+ *    interface and over all the existing interfaces even if they
+ *    haven't been re-added to the driver yet.
+ * @IEEE80211_IFACE_ITER_RESUME_ALL: During resume, iterate over all
+ *    interfaces, even if they haven't been re-added to the driver yet.
+ * @IEEE80211_IFACE_ITER_ACTIVE: Iterate only active interfaces (netdev is up).
+ */
+enum ieee80211_interface_iteration_flags {
+    IEEE80211_IFACE_ITER_NORMAL    = 0,
+    IEEE80211_IFACE_ITER_RESUME_ALL    = BIT(0),
+    IEEE80211_IFACE_ITER_ACTIVE    = BIT(1),
+};
 #endif /* mac80211_h */
 
 

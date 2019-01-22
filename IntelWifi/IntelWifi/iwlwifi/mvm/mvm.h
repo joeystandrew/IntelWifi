@@ -70,11 +70,14 @@
 //#include <linux/leds.h>
 #include <linux/in6.h>
 
+#include <libkern/locks.h>
+
 
 #ifdef CONFIG_THERMAL
 //#include <linux/thermal.h>
 #endif
 
+//#include <iokern/queue.h>
 #include "iwl-op-mode.h"
 #include "iwl-trans.h"
 #include "../fw/notif-wait.h"
@@ -89,6 +92,7 @@
 #include "../fw/dbg.h"
 #include "../fw/acpi.h"
 #include "iwl-nvm-parse.h"
+#include "../../porting/linux/err.h"
 
 //#include <linux/average.h>
 
@@ -475,13 +479,13 @@ struct iwl_mvm_vif {
     struct ieee80211_key_conf *ap_wep_key;
 };
 
-//static inline struct iwl_mvm_vif *
-//iwl_mvm_vif_from_mac80211(struct ieee80211_vif *vif)
-//{
-//    if (!vif)
-//        return NULL;
-//    return (void *)vif->drv_priv;
-//}
+static inline struct iwl_mvm_vif *
+iwl_mvm_vif_from_mac80211(struct ieee80211_vif *vif)
+{
+    if (!vif)
+        return NULL;
+    return (struct iwl_mvm_vif *)vif->drv_priv;
+}
 
 extern const u8 tid_to_mac80211_ac[];
 
@@ -632,6 +636,7 @@ struct iwl_mvm_tcm_mac {
 
 struct iwl_mvm_tcm {
 //    struct delayed_work work;
+    IOSimpleLock * lock;
 //    spinlock_t lock; /* used when time elapsed */
     unsigned long ts; /* timestamp when period ends */
     unsigned long ll_ts;
@@ -800,7 +805,7 @@ struct iwl_mvm {
     struct ieee80211_hw *hw;
     
     /* for protecting access to iwl_mvm */
-//    struct mutex mutex;
+    IOLock * mutex;
     struct list_head async_handlers_list;
 //    spinlock_t async_handlers_lock;
 //    struct work_struct async_handlers_wk;
@@ -953,6 +958,7 @@ struct iwl_mvm {
     
     /* references taken by the driver and spinlock protecting them */
 //    spinlock_t refs_lock;
+    IOSimpleLock * refs_lock;
     u8 refs[IWL_MVM_REF_COUNT];
     
     u8 vif_count;
@@ -991,13 +997,16 @@ struct iwl_mvm {
     /* d0i3 */
     u8 d0i3_ap_sta_id;
     bool d0i3_offloading;
-//    struct work_struct d0i3_exit_work;
-    struct sk_buff_head d0i3_tx;
+    struct queue_entry d0i3_exit_work;
+    queue_t d0i3_tx;
     /* protect d0i3_suspend_flags */
 //    struct mutex d0i3_suspend_mutex;
+    IOLock * d0i3_suspend_mutex;
     unsigned long d0i3_suspend_flags;
     /* sync d0i3_tx queue and IWL_MVM_STATUS_IN_D0I3 status flag */
 //    spinlock_t d0i3_tx_lock;
+    IOSimpleLock * d0i3_tx_lock;
+    IOLock * d0i3_exit_waitq;
 //    wait_queue_head_t d0i3_exit_waitq;
 //    wait_queue_head_t rx_sync_waitq;
     
@@ -1173,23 +1182,23 @@ static inline bool iwl_mvm_firmware_running(struct iwl_mvm *mvm)
 /* Must be called with rcu_read_lock() held and it can only be
  * released when mvmsta is not needed anymore.
  */
-//static inline struct iwl_mvm_sta *
-//iwl_mvm_sta_from_staid_rcu(struct iwl_mvm *mvm, u8 sta_id)
-//{
-//    struct ieee80211_sta *sta;
-//
-//    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
-//        return NULL;
-//
-////    sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
-//    sta = mvm->fw_id_to_mac_id[sta_id];
-//
-//    /* This can happen if the station has been removed right now */
-////    if (IS_ERR_OR_NULL(sta))
-////        return NULL;
-//
-//    return iwl_mvm_sta_from_mac80211(sta);
-//}
+static inline struct iwl_mvm_sta *
+iwl_mvm_sta_from_staid_rcu(struct iwl_mvm *mvm, u8 sta_id)
+{
+    struct ieee80211_sta *sta;
+
+    if (sta_id >= ARRAY_SIZE(mvm->fw_id_to_mac_id))
+        return NULL;
+
+//    sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
+    sta = mvm->fw_id_to_mac_id[sta_id];
+
+    /* This can happen if the station has been removed right now */
+    if (IS_ERR_OR_NULL(sta))
+        return NULL;
+
+    return iwl_mvm_sta_from_mac80211(sta);
+}
 
 //static inline struct iwl_mvm_sta *
 //iwl_mvm_sta_from_staid_protected(struct iwl_mvm *mvm, u8 sta_id)
